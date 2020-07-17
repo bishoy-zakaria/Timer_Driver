@@ -10,7 +10,11 @@
 #include "avr/interrupt.h"
 
 extern uint32 num_over_flow;
+
+extern uint32 Compare_Match;
+
 extern uint8  init_value;
+
 volatile uint8 count=0;
 
 int main(void)
@@ -42,7 +46,7 @@ ISR (TIMER0_OVF_vect)
 ISR(TIMER0_COMP_vect)
 {
 	    count++;
-		while (count == num_over_flow)
+		while (count == Compare_Match)
 		{
 			Toggle_BIT(PORTC,7);
 			OCR0 = init_value;

@@ -45,6 +45,7 @@ Allocating common symbols
 Common symbol       size              file
 
 init_value          0x1               Timer.o
+Compare_Match       0x4               Timer.o
 num_over_flow       0x4               Timer.o
 
 Discarded input sections
@@ -500,25 +501,26 @@ END GROUP
                 0x00800060                _edata = .
                 [!provide]                PROVIDE (__data_end, .)
 
-.bss            0x00800060        0x6
+.bss            0x00800060        0xa
                 0x00800060                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.count     0x00800060        0x1 main.o
                 0x00800060                count
  *(COMMON)
- COMMON         0x00800061        0x5 Timer.o
+ COMMON         0x00800061        0x9 Timer.o
                 0x00800061                init_value
-                0x00800062                num_over_flow
-                0x00800066                PROVIDE (__bss_end, .)
+                0x00800062                Compare_Match
+                0x00800066                num_over_flow
+                0x0080006a                PROVIDE (__bss_end, .)
                 0x00000720                __data_load_start = LOADADDR (.data)
                 0x00000720                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800066        0x0
+.noinit         0x0080006a        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800066                _end = .
+                0x0080006a                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0

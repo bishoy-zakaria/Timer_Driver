@@ -7,7 +7,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   1 .data         00000000  00800060  00800060  00000794  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000006  00800060  00800060  00000794  2**0
+  2 .bss          0000000a  00800060  00800060  00000794  2**0
                   ALLOC
   3 .comment      00000030  00000000  00000000  00000794  2**0
                   CONTENTS, READONLY
@@ -65,7 +65,7 @@ Disassembly of section .text:
   68:	1d 92       	st	X+, r1
 
 0000006a <.do_clear_bss_start>:
-  6a:	a6 36       	cpi	r26, 0x66	; 102
+  6a:	aa 36       	cpi	r26, 0x6A	; 106
   6c:	b2 07       	cpc	r27, r18
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
   70:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
@@ -107,10 +107,10 @@ Disassembly of section .text:
   be:	90 e0       	ldi	r25, 0x00	; 0
   c0:	a0 e0       	ldi	r26, 0x00	; 0
   c2:	b0 e0       	ldi	r27, 0x00	; 0
-  c4:	40 91 62 00 	lds	r20, 0x0062	; 0x800062 <num_over_flow>
-  c8:	50 91 63 00 	lds	r21, 0x0063	; 0x800063 <num_over_flow+0x1>
-  cc:	60 91 64 00 	lds	r22, 0x0064	; 0x800064 <num_over_flow+0x2>
-  d0:	70 91 65 00 	lds	r23, 0x0065	; 0x800065 <num_over_flow+0x3>
+  c4:	40 91 66 00 	lds	r20, 0x0066	; 0x800066 <num_over_flow>
+  c8:	50 91 67 00 	lds	r21, 0x0067	; 0x800067 <num_over_flow+0x1>
+  cc:	60 91 68 00 	lds	r22, 0x0068	; 0x800068 <num_over_flow+0x2>
+  d0:	70 91 69 00 	lds	r23, 0x0069	; 0x800069 <num_over_flow+0x3>
   d4:	84 17       	cp	r24, r20
   d6:	95 07       	cpc	r25, r21
   d8:	a6 07       	cpc	r26, r22
@@ -158,10 +158,10 @@ Disassembly of section .text:
  132:	90 e0       	ldi	r25, 0x00	; 0
  134:	a0 e0       	ldi	r26, 0x00	; 0
  136:	b0 e0       	ldi	r27, 0x00	; 0
- 138:	40 91 62 00 	lds	r20, 0x0062	; 0x800062 <num_over_flow>
- 13c:	50 91 63 00 	lds	r21, 0x0063	; 0x800063 <num_over_flow+0x1>
- 140:	60 91 64 00 	lds	r22, 0x0064	; 0x800064 <num_over_flow+0x2>
- 144:	70 91 65 00 	lds	r23, 0x0065	; 0x800065 <num_over_flow+0x3>
+ 138:	40 91 62 00 	lds	r20, 0x0062	; 0x800062 <Compare_Match>
+ 13c:	50 91 63 00 	lds	r21, 0x0063	; 0x800063 <Compare_Match+0x1>
+ 140:	60 91 64 00 	lds	r22, 0x0064	; 0x800064 <Compare_Match+0x2>
+ 144:	70 91 65 00 	lds	r23, 0x0065	; 0x800065 <Compare_Match+0x3>
  148:	84 17       	cp	r24, r20
  14a:	95 07       	cpc	r25, r21
  14c:	a6 07       	cpc	r26, r22
@@ -247,10 +247,10 @@ Disassembly of section .text:
  1e6:	0e 94 52 03 	call	0x6a4	; 0x6a4 <__udivmodsi4>
  1ea:	49 01       	movw	r8, r18
  1ec:	5a 01       	movw	r10, r20
- 1ee:	20 93 62 00 	sts	0x0062, r18	; 0x800062 <num_over_flow>
- 1f2:	30 93 63 00 	sts	0x0063, r19	; 0x800063 <num_over_flow+0x1>
- 1f6:	40 93 64 00 	sts	0x0064, r20	; 0x800064 <num_over_flow+0x2>
- 1fa:	50 93 65 00 	sts	0x0065, r21	; 0x800065 <num_over_flow+0x3>
+ 1ee:	20 93 62 00 	sts	0x0062, r18	; 0x800062 <Compare_Match>
+ 1f2:	30 93 63 00 	sts	0x0063, r19	; 0x800063 <Compare_Match+0x1>
+ 1f6:	40 93 64 00 	sts	0x0064, r20	; 0x800064 <Compare_Match+0x2>
+ 1fa:	50 93 65 00 	sts	0x0065, r21	; 0x800065 <Compare_Match+0x3>
  1fe:	c7 01       	movw	r24, r14
  200:	b6 01       	movw	r22, r12
  202:	26 e0       	ldi	r18, 0x06	; 6
@@ -289,17 +289,17 @@ Disassembly of section .text:
  250:	0e 94 28 02 	call	0x450	; 0x450 <__fixunssfsi>
  254:	60 93 61 00 	sts	0x0061, r22	; 0x800061 <init_value>
  258:	6c bf       	out	0x3c, r22	; 60
- 25a:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <num_over_flow>
- 25e:	90 91 63 00 	lds	r25, 0x0063	; 0x800063 <num_over_flow+0x1>
- 262:	a0 91 64 00 	lds	r26, 0x0064	; 0x800064 <num_over_flow+0x2>
- 266:	b0 91 65 00 	lds	r27, 0x0065	; 0x800065 <num_over_flow+0x3>
+ 25a:	80 91 62 00 	lds	r24, 0x0062	; 0x800062 <Compare_Match>
+ 25e:	90 91 63 00 	lds	r25, 0x0063	; 0x800063 <Compare_Match+0x1>
+ 262:	a0 91 64 00 	lds	r26, 0x0064	; 0x800064 <Compare_Match+0x2>
+ 266:	b0 91 65 00 	lds	r27, 0x0065	; 0x800065 <Compare_Match+0x3>
  26a:	01 96       	adiw	r24, 0x01	; 1
  26c:	a1 1d       	adc	r26, r1
  26e:	b1 1d       	adc	r27, r1
- 270:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <num_over_flow>
- 274:	90 93 63 00 	sts	0x0063, r25	; 0x800063 <num_over_flow+0x1>
- 278:	a0 93 64 00 	sts	0x0064, r26	; 0x800064 <num_over_flow+0x2>
- 27c:	b0 93 65 00 	sts	0x0065, r27	; 0x800065 <num_over_flow+0x3>
+ 270:	80 93 62 00 	sts	0x0062, r24	; 0x800062 <Compare_Match>
+ 274:	90 93 63 00 	sts	0x0063, r25	; 0x800063 <Compare_Match+0x1>
+ 278:	a0 93 64 00 	sts	0x0064, r26	; 0x800064 <Compare_Match+0x2>
+ 27c:	b0 93 65 00 	sts	0x0065, r27	; 0x800065 <Compare_Match+0x3>
  280:	ff 90       	pop	r15
  282:	ef 90       	pop	r14
  284:	df 90       	pop	r13

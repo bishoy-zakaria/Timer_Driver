@@ -9,6 +9,7 @@
 
 uint32 num_over_flow;
 uint8  init_value;
+uint32 Compare_Match;
 
 void timer_init(void)
 {
@@ -144,13 +145,13 @@ void timer_delay(uint32 delay_ms )
 		 
 		 uint32 num_tick = (delay_ms*1000)/tick_time;
 		 
-		 num_over_flow = num_tick/255;
+		 Compare_Match = num_tick/255;
 		 
-		 init_value =    ((  (float32) num_tick/255 - num_over_flow  ) * 255)-1;
+		 init_value =    ((  (float32) num_tick/255 - Compare_Match  ) * 255)-1;
 		 
 		 OCR0 = init_value;
 		 
-		 num_over_flow++;
+		 Compare_Match++;
 	}
 	#endif
 }
