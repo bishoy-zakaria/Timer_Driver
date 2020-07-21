@@ -13,13 +13,11 @@
 
 #define Freq                16    // MEGA HERTEZ
  
-#define Timer_CLK            Pres_CLK_1024 
+ #define Timer_CLK            Pres_CLK
 
-#define Timer_Mode           CTC_Mode 
+#define Timer_Mode          PWM_Phase_Correct_Mode 
 
-#define CTC_Output           CTC_Output_DISABLE 
-
-#define CTC_Output_Mode      CTC_Output_Mode_Set 
+#define PWM_Mode             PWM_NON_Inverted_Mode
 
 #define interrupt_state      interrupt_Enable 
 

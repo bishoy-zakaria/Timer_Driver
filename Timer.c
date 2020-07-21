@@ -6,13 +6,16 @@
  */ 
 #include "Timer.h"
 #include "Timer_Cfg.h"
-
+#include <avr/interrupt.h>
 uint32 num_over_flow;
 uint8  init_value;
 uint32 Compare_Match;
+volatile uint8 count=0;
+static void (*Timer0_Ptr)(void);
 
 void timer_init(void)
 {
+	CLR_BIT(TCCR0,7);
 	
 	#if     Timer_Mode    ==       Normal_Mode
 	{
@@ -38,39 +41,42 @@ void timer_init(void)
 		}
 		#endif
 	}
-	#endif
 	
-	#if    CTC_Output  ==   CTC_Output_ENABLE
+	#elif   Timer_Mode    ==       Fast_PWM_Mode 
 	{
-		SET_BIT(TCCR0,7);
+		SET_BIT(TCCR0,6);
+		SET_BIT(TCCR0,3);
 		
-	   #if  CTC_Output_Mode      ==     CTC_Output_Mode_Toggel
-	   {
-		   CLR_BIT(TCCR0,5);
-		   SET_BIT(TCCR0,4);
-	   }
-	   #elif  CTC_Output_Mode      ==     CTC_Output_Mode_Clear
-	   {
-		   SET_BIT(TCCR0,5);
-		   CLR_BIT(TCCR0,4);
-	   }
-	   #elif  CTC_Output_Mode      ==     CTC_Output_Mode_Set
-	   {
-		   SET_BIT(TCCR0,5);
-		   SET_BIT(TCCR0,4);
-	   }
-	   #endif
-	   
-   }
-   
-   #elif    CTC_Output  ==   CTC_Output_DISABLE
-   {
-	   CLR_BIT(TCCR0,7);
-	   CLR_BIT(TCCR0,5);
-	   CLR_BIT(TCCR0,4);
-   }
-   #endif
-    
+		#if   PWM_Mode    ==   PWM_NON_Inverted_Mode
+		{
+			SET_BIT(TCCR0,5);
+			CLR_BIT(TCCR0,4);
+		}
+		#elif PWM_Mode    ==   PWM_Inverted_Mode
+		{
+			SET_BIT(TCCR0,5);
+			SET_BIT(TCCR0,4);
+		}
+		#endif
+	}
+	#elif   Timer_Mode    ==       PWM_Phase_Correct_Mode
+	{
+		SET_BIT(TCCR0,6);
+		CLR_BIT(TCCR0,3);
+		
+		#if   PWM_Mode    ==   PWM_NON_Inverted_Mode
+		{
+			SET_BIT(TCCR0,5);
+			CLR_BIT(TCCR0,4);
+		}
+		#elif PWM_Mode    ==   PWM_Inverted_Mode
+		{
+			SET_BIT(TCCR0,5);
+			SET_BIT(TCCR0,4);
+		}
+		#endif
+	}
+	#endif
 	
 }
 
@@ -113,7 +119,7 @@ void timer_start(void)
  
 }
 
-void timer_stop(void)
+void timer0_stop(void)
 {
 	CLR_BIT(TCCR0,0);
 	CLR_BIT(TCCR0,1);
@@ -154,4 +160,68 @@ void timer_delay(uint32 delay_ms )
 		 Compare_Match++;
 	}
 	#endif
+}
+
+void timer0_Set_CallBack(void (*ptr)(void))
+{
+	Timer0_Ptr = ptr;
+}
+
+/* ************************** PWM ************************ */
+
+void PWM_Value(uint16 Duty_Cycle)
+{
+	#if Timer_Mode    ==       Fast_PWM_Mode 
+	{
+		#if PWM_Mode    ==   PWM_NON_Inverted_Mode
+		{
+			OCR0 = (Duty_Cycle * 256 / 100) - 1;
+		}
+		
+		#elif PWM_Mode    ==   PWM_Inverted_Mode
+		{
+			OCR0 = 255-(Duty_Cycle * 256 /100);
+		}
+		#endif 
+	}
+	
+	#elif Timer_Mode    ==       PWM_Phase_Correct_Mode
+	{
+		#if PWM_Mode    ==   PWM_NON_Inverted_Mode
+		{
+			OCR0 = (Duty_Cycle * 256 / 100);
+		}
+		
+		#elif PWM_Mode    ==   PWM_Inverted_Mode
+		{
+			OCR0 = 255-(Duty_Cycle * 255 /100);
+		}
+		#endif
+	}
+	#endif
+}
+
+/* **************************** ISR ************************ */
+
+ISR (TIMER0_OVF_vect)
+{
+	count++;
+	while (count == num_over_flow)
+	{
+		(*Timer0_Ptr)();
+		TCNT0 = init_value;
+		count=0;
+	}
+}
+
+ISR(TIMER0_COMP_vect)
+{
+	count++;
+	while (count == Compare_Match)
+	{
+		(*Timer0_Ptr)();
+		OCR0 = init_value;
+		count=0;
+	}
+	
 }

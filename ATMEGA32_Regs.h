@@ -35,7 +35,7 @@
 
 #define SREG         (*(volatile uint8*)(0x5F))
 
-/* *************************************** TIMER ************************************ */
+/* *************************************** TIMER0 ************************************ */
 
 #define TCCR0        (*(volatile uint8*)(0x53))
 #define TCNT0        (*(volatile uint8*)(0x52))
@@ -43,4 +43,11 @@
 #define TIMSK        (*(volatile uint8*)(0x59))
 #define TIFR         (*(volatile uint8*)(0x58))
 
+/* *************************************** TIMER1 ************************************ */
+
+#define TCCR1A        (*(volatile uint8*)(0x4F))
+#define TCCR1B        (*(volatile uint8*)(0x4E))
+#define TCNTL1        (*(volatile uint16*)(0x4C))
+#define OCR1AL        (*(volatile uint16*)(0x4A))
+ 
 #endif /* ATMEGA32_REG_H_ */

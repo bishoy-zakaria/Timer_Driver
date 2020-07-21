@@ -21,24 +21,44 @@
 
 #define Normal_Mode                0
 #define CTC_Mode                   1
+#define PWM_Phase_Correct_Mode     2
+#define Fast_PWM_Mode              3
 
-#define CTC_Output_ENABLE          0
-#define CTC_Output_DISABLE         1
-
-#define CTC_Output_Mode_Toggel     0
-#define CTC_Output_Mode_Clear      1
-#define CTC_Output_Mode_Set        2
+#define PWM_NON_Inverted_Mode      0
+#define PWM_Inverted_Mode          1
 
 #define interrupt_Disable          0
 #define interrupt_Enable           1
 
-void timer_init(void);
+void timer0_init(void);
 
-void timer_start(void);
+void timer0_start(void);
 
-void timer_stop(void);
+void timer0_stop(void);
 
-void timer_delay(uint32);
+void timer0_delay(uint32);
+
+void timer0_Set_CallBack(void (*ptr)(void));
+
+/* ************************** PWM ***************************** */
+
+void PWM_Value(uint16 );
+
+void PWM_Set_CallBack(void (*ptr)(void));
+
+/* ************************** TIMER1 *************************** */
+
+void timer1_init(void);
+
+void timer1_start(void);
+
+void timer1_stop(void);
+
+void timer1_delay(uint32);
+
+void timer1_Set_CallBack(void (*ptr)(void));
+
+
 
 
 #endif /* TIMER_H_ */

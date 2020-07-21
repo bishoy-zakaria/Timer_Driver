@@ -7,50 +7,37 @@
 
 #include "Timer.h"
 #include "Timer_Cfg.h"
-#include "avr/interrupt.h"
-
-extern uint32 num_over_flow;
-
-extern uint32 Compare_Match;
-
-extern uint8  init_value;
-
-volatile uint8 count=0;
+#include "LED.h"
+#define F_CPU 16000000
+#include <util/delay.h>
 
 int main(void)
 {
-    DDRC = 0b10000000;
-	
+    DDRB = 0b00001000;
 	timer_init();
-	timer_delay(500);
-	timer_start();
-	
-    while (1) 
+	while (1)
+	{
+   static uint8 counter=0;
+   PWM_Value(counter);
+   timer_start();
+   _delay_ms(50);
+   timer0_stop();
+   counter++;
+   if (counter==100)
     {
+	   while(counter>0)
+	   { 
+		   counter--;
+		   PWM_Value(counter);
+		   timer_start();
+		   _delay_ms(100);
+		   timer0_stop();
+		  
+		   
+       }
+   
+    }
+		
     }
 }
 
-ISR (TIMER0_OVF_vect)
-{
-	count++;
-	while (count == num_over_flow)
-	{
-		Toggle_BIT(PORTC,7);
-		TCNT0 = init_value;
-		count=0;
-	}
-	
-	
-}
-
-ISR(TIMER0_COMP_vect)
-{
-	    count++;
-		while (count == Compare_Match)
-		{
-			Toggle_BIT(PORTC,7);
-			OCR0 = init_value;
-			count=0;
-		}
-		
-}
